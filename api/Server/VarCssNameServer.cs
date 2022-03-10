@@ -21,7 +21,7 @@ namespace api.Server.VarCssName
                 VarCssNameModel data = new VarCssNameModel(
                     dr.GetInt32(0),
                     dr.GetString(1),
-                    dr.GetString(2)
+                    libs.Libs.saveNullNpgsqlString(dr, 2)
                 );
                 res.Add(data);
             }
