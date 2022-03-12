@@ -11,7 +11,9 @@ namespace api.Server.Theme
         
         public NpgsqlConnection db = Connection.conn;
 
-        
+        /**
+         * function mapBdMhemeModel - заполняет с бд данные в объект для вывода
+         */
         private List<ThemeModel> mapBdMhemeModel(NpgsqlDataReader dr)
         {
             var themeModel = new List<ThemeModel>();
@@ -26,7 +28,10 @@ namespace api.Server.Theme
             }
             return themeModel;
         }
-        
+
+        /**
+         *  function getAll - получить все темы
+         */
         public List<ThemeModel> getAll()
         {
             db.Open();
@@ -38,7 +43,9 @@ namespace api.Server.Theme
             db.Close();
             return res;
         }
-
+        /**
+        *  function getAll - получить темы с пагинацией
+        */
         public List<ThemeModel> getPages(Pagination pagination)
         {
             db.Open();
@@ -52,7 +59,9 @@ namespace api.Server.Theme
             db.Close();
             return res;
         }
-
+        /**
+        *  function getNameWhereId - получить тему по id 
+        */
         public string getNameWhereId(int id)
         {
             db.Open();
@@ -70,7 +79,9 @@ namespace api.Server.Theme
 
 
         }
-
+        /**
+        *  function getCountWhereName - получить количество записей по имени валидация занятого имени
+        */
         public int getCountWhereName(string name)
         {
             db.Open();
@@ -88,7 +99,9 @@ namespace api.Server.Theme
 
 
         }
-
+        /**
+        *  function getCountWhereId - получить количество записей по id валидация занятого имени
+        */
         public int getCountWhereId(int id)
         {
             db.Open();
@@ -103,7 +116,9 @@ namespace api.Server.Theme
             db.Close();
             return count;
         }
-
+        /**
+        *  function checkIdRows -  проверка есть ли записи по id
+        */
         public bool checkIdRows(int id)
         {
             if (getCountWhereId(id) == 0)
@@ -112,7 +127,9 @@ namespace api.Server.Theme
             }
             return true;
         }
-
+        /**
+        *  function checkIdRows -  проверка есть ли записи по id
+        */
         public bool checkSave(ThemeBodyModel themeBodyModel)
         {
             if (getCountWhereName(themeBodyModel.name) > 0)
