@@ -82,28 +82,43 @@ namespace api.Server.VarCssName
 
         public void save(VarCssNameBodyModel varCssNameBodyModel)
         {
-                db.Open();
-                NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["save"], db);
-                sql.Parameters.AddWithValue("@name", varCssNameBodyModel.name);
-                sql.Parameters.AddWithValue("@description", varCssNameBodyModel.description);
-                sql.ExecuteNonQuery();
-                db.Close();
-        
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["save"], db);
+            sql.Parameters.AddWithValue("@name", varCssNameBodyModel.name);
+            sql.Parameters.AddWithValue("@description", varCssNameBodyModel.description);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            int id = 0;
+            while (dr.Read())
+            {
+                id = dr.GetInt32(0);
+            }
+            dr.Close();
+            sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAllVarCss"];
+            sql.Parameters.AddWithValue("@id_var_css", id);
+            sql.ExecuteNonQuery();
+            db.Close();       
             }
         
         public void delete(int id)
         {
             db.Open();
-            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["delete"], db);
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["deleteVarCssId"], db);
+            sql.Parameters.AddWithValue("@id_var_css", id);
+            sql.ExecuteNonQuery();
+            sql.CommandText = SqlCommand.sqlVarCssName["delete"];    
             sql.Parameters.AddWithValue("@id", id);
             sql.ExecuteNonQuery();
+
             db.Close();
         }
         
         public void deleteIn(int[] ids)
         {
             db.Open();
-            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["deleteIn"], db);
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["deleteVarCssIds"], db);
+            sql.Parameters.AddWithValue("@ids_var_css", ids);
+            sql.ExecuteNonQuery();
+            sql.CommandText =  SqlCommand.sqlVarCssName["deleteIn"];
             sql.Parameters.AddWithValue("@ids", ids);
             sql.ExecuteNonQuery();
             db.Close();

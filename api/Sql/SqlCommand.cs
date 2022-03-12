@@ -42,8 +42,21 @@
 	                 unnest(array(select id from var_css_name))
                 )
             ",
+            ["insertAllVarCss"] = @"
+                insert into var_css_name__theme (id_theme, id_var_css_name)
+                values(
+                 unnest(array(select id from theme)),
+                @id_var_css
+                )
+            ",
             ["deleteThemeId"] = @"
                 DELETE FROM var_css_name__theme WHERE id_theme = @id_theme;
+            ",
+            ["deleteVarCssId"] = @"
+                DELETE FROM var_css_name__theme WHERE id_var_css_name = @id_var_css;
+            ",
+            ["deleteVarCssIds"] = @"
+                DELETE FROM var_css_name__theme WHERE id_var_css_name = ANY(@ids_var_css);
             ",
             ["deleteThemeIds"] = @"
                 DELETE FROM var_css_name__theme WHERE id_theme = ANY(@ids_theme);
@@ -82,7 +95,7 @@
              ["getCountWhereId"] = @"
                 SELECT count(*) count FROM public.var_css_name WHERE id=@id",
              ["save"] = @"
-                 INSERT INTO public.var_css_name (name, description) VALUES(@name, @description)",
+                 INSERT INTO public.var_css_name (name, description) VALUES(@name, @description) RETURNING id",
              ["delete"] = @"
                  DELETE FROM public.var_css_name WHERE id=@id;",
              ["deleteIn"] = @"
