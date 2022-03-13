@@ -146,15 +146,15 @@ namespace api.Server.Theme
             sql.Parameters.AddWithValue("@name", themeBodyModel.name);
             sql.Parameters.AddWithValue("@description", themeBodyModel.description);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            int id = 0;
-            while (dr.Read())
-            {
-                id = dr.GetInt32(0);
-            }
-            dr.Close();
-            sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAll"];
-            sql.Parameters.AddWithValue("@id_theme", id);
-            sql.ExecuteNonQuery();
+            //int id = 0;
+            //while (dr.Read())
+           // {
+            //    id = dr.GetInt32(0);
+            //}
+            //dr.Close();
+            // sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAll"];
+            // sql.Parameters.AddWithValue("@id_theme", id);
+            // sql.ExecuteNonQuery();
             db.Close();
         }
         

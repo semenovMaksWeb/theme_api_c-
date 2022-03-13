@@ -87,15 +87,15 @@ namespace api.Server.VarCssName
             sql.Parameters.AddWithValue("@name", varCssNameBodyModel.name);
             sql.Parameters.AddWithValue("@description", varCssNameBodyModel.description);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            int id = 0;
-            while (dr.Read())
-            {
-                id = dr.GetInt32(0);
-            }
-            dr.Close();
-            sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAllVarCss"];
-            sql.Parameters.AddWithValue("@id_var_css", id);
-            sql.ExecuteNonQuery();
+            //int id = 0;
+            //while (dr.Read())
+            //{
+            //    id = dr.GetInt32(0);
+            //}
+            //dr.Close();
+            //sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAllVarCss"];
+            //sql.Parameters.AddWithValue("@id_var_css", id);
+            //sql.ExecuteNonQuery();
             db.Close();       
             }
         
