@@ -61,6 +61,14 @@
             ["deleteThemeIds"] = @"
                 DELETE FROM var_css_name__theme WHERE id_theme = ANY(@ids_theme);
             ",
+            ["delete"] = "DELETE FROM var_css_name__theme WHERE id = @id;",
+            ["save"] = @"
+                insert into var_css_name__theme (id_theme, id_var_css_name)
+                values(
+                    @id_theme,
+                    @id_var_css
+                ) RETURNING id;
+            ",
             ["updateResetThemeId"] = @"
                 UPDATE public.var_css_name__theme vsnt
                 SET value =  null  where vsnt.id_theme  = @id_theme

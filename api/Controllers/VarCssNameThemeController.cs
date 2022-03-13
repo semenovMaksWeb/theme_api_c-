@@ -26,5 +26,19 @@ namespace api.Controllers
         {
             return varCssNameThemeServer.updateAll(varCssNameThemeUpdateAll);
         }
+
+        [HttpDelete("/var_css_name_theme/delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public string delete(int id)
+        {
+            return varCssNameThemeServer.delete(id);
+        }
+
+        [HttpPost("/var_css_name_theme/save")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public string save(VarCssNameThemeSave varCssNameThemeSave)
+        {
+            return varCssNameThemeServer.save(varCssNameThemeSave);
+        }
     }
 }

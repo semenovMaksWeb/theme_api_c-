@@ -1,5 +1,6 @@
 ﻿using Npgsql;
 using api.Sql;
+using api.Models;
 using api.Models.VarCssNameTheme;
 using api.libs;
 namespace api.Server
@@ -24,11 +25,37 @@ namespace api.Server
                 varCssNameTheme.value = libs.Libs.saveNullNpgsqlString(dr, 2);
                 varCssNameThemeList.Add(varCssNameTheme);
             }
-           db.Close();
-           return varCssNameThemeList;
+            db.Close();
+            return varCssNameThemeList;
         }
 
-        public string updateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
+        public Info delete(int id)
+        {
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["delete"], db);
+            sql.Parameters.AddWithValue("@id", id);
+            sql.ExecuteNonQuery();
+            db.Close();
+            return new Info("запись успешно удалена");
+        }
+
+        public Info save(VarCssNameThemeSave varCssNameThemeSave)
+        {
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["save"], db);
+            sql.Parameters.AddWithValue("@id_theme", varCssNameThemeSave.id_theme);
+            sql.Parameters.AddWithValue("@id_var_css", varCssNameThemeSave.id_var);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            int id = 0;
+            while (dr.Read())
+            {
+                id = dr.GetInt32(0);
+            }
+            db.Close();
+            return new Info("запись успешно создана");
+        }
+
+        public Info updateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
         {
             db.Open();
             /*
@@ -43,7 +70,7 @@ namespace api.Server
             // спорное решение
             sql.ExecuteNonQuery();
             db.Close();
-            return "Успешно измененно";
+            return new Info("записи успешно измененны"); 
         }
     }
 }
