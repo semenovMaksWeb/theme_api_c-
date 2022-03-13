@@ -14,7 +14,7 @@ namespace api.Controllers
         {
             _logger = logger;
         }
-        [HttpGet("/theme/get_name")]
+        [HttpGet("/theme/get_id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<string> getNameWhereId(int id)
