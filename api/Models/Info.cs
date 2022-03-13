@@ -2,7 +2,7 @@
 {
     public class Info
     {
-        string info = "";
+        public string info { get; set; } = "";
         public Info(string info)
         {
             this.info = info;

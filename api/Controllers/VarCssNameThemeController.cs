@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using api.Server;
 using api.Models.VarCssNameTheme;
+using api.Models;
+
 namespace api.Controllers
 {
     [ApiController]
@@ -22,21 +24,21 @@ namespace api.Controllers
 
         [HttpPut("/var_css_name_theme/update_all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public string UpdateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
+        public Info UpdateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
         {
             return varCssNameThemeServer.updateAll(varCssNameThemeUpdateAll);
         }
 
         [HttpDelete("/var_css_name_theme/delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public string delete(int id)
+        public Info delete(int id)
         {
             return varCssNameThemeServer.delete(id);
         }
 
         [HttpPost("/var_css_name_theme/save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public string save(VarCssNameThemeSave varCssNameThemeSave)
+        public VarCssNameThemeSaveReturn save(VarCssNameThemeSave varCssNameThemeSave)
         {
             return varCssNameThemeServer.save(varCssNameThemeSave);
         }

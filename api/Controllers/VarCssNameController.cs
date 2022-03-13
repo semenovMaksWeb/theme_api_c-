@@ -24,19 +24,19 @@ namespace api.Controllers
             {
                 return varCssName;
             }
-            return NotFound("переменных не существует");
+            return NotFound(new Info("переменных не существует"));
         }
 
         [HttpPost("/var_css_name/save")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> Post(VarCssNameBodyModel varCssNameBodyModel)
+        public ActionResult<Info> Post(VarCssNameBodyModel varCssNameBodyModel)
         {
             if(!varCssNameServer.checkSave(varCssNameBodyModel)) {
-                return BadRequest("текущие имя уже занято");
+                return BadRequest(new Info("текущие имя уже занято"));
             }
             varCssNameServer.save(varCssNameBodyModel);
-            return "запись удачно создана";
+            return new Info("запись удачно создана");
         }
         
         [HttpDelete("/var_css_name/delete")]
@@ -53,35 +53,35 @@ namespace api.Controllers
         }
         
         [HttpDelete("/var_css_name/delete_in")]
-        public string DeleteIn(int[] ids)
+        public Info DeleteIn(int[] ids)
         {
             varCssNameServer.deleteIn(ids);
-            return "записи удачно удалены";
+            return new Info("записи удачно удалены");
         }
         
         [HttpPut("/var_css_name/update_all")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> UpdateAll(int id, VarCssNameBodyModelUpdateAll varCssNameBodyModelUpdateAll)
+        public ActionResult<Info> UpdateAll(int id, VarCssNameBodyModelUpdateAll varCssNameBodyModelUpdateAll)
         {
             if (!varCssNameServer.checkIdRows(id)) {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("запись не найдена"));
             }
             varCssNameServer.updateAll(id, varCssNameBodyModelUpdateAll);
-            return "запись удачно измененна";
+            return  new Info("запись удачно измененна");
         }
        
         [HttpPut("/var_css_name/update_description")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> UpdateDescription(int id, VarCssNameBodyModelUpdateDescription varCssNameBodyModelUpdateDescription)
+        public ActionResult<Info> UpdateDescription(int id, VarCssNameBodyModelUpdateDescription varCssNameBodyModelUpdateDescription)
         {
             if (!varCssNameServer.checkIdRows(id))
             {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("запись не найдена"));
             }
             varCssNameServer.updateDescription(id, varCssNameBodyModelUpdateDescription);
-            return "запись удачно измененна";
+            return new Info("запись удачно измененна");
         }
 
     }

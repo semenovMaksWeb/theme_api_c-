@@ -22,7 +22,7 @@ namespace api.Controllers
             string name = themeServer.getNameWhereId(id);
             if (name == "")
             {
-                return NotFound("тема не существует");
+                return NotFound(new Info("тема не существует"));
             }
             return name;
         }
@@ -37,7 +37,7 @@ namespace api.Controllers
             {
                 return Theme;
             }
-            return NotFound("тем не существует");
+            return NotFound(new Info("тем не существует"));
         }
 
         [HttpGet("/theme/get_pages")]
@@ -50,65 +50,65 @@ namespace api.Controllers
             {
                 return Theme;
             }
-            return NotFound("тем в текущем диапозоне не существует");
+            return NotFound(new Info("тем в текущем диапозоне не существует"));
         }
 
 
         [HttpPost("/theme/save")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> Post(ThemeBodyModel themeBodyModel)
+        public ActionResult<Info> Post(ThemeBodyModel themeBodyModel)
         {
             if(!themeServer.checkSave(themeBodyModel)) {
-                return BadRequest("текущие имя уже занято");
+                return BadRequest(new Info("текущие имя уже занято"));
             }
             themeServer.save(themeBodyModel);
-            return "запись удачно создана";
+            return new Info("запись удачно создана");
         }
         
         [HttpDelete("/theme/delete")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> Delete (int id)
+        public ActionResult<Info> Delete (int id)
         {
             if (!themeServer.checkIdRows(id))
             {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("запись не найдена"));
             }
             themeServer.delete(id);
-            return "запись удачно удалена";
+            return new Info("запись удачно удалена");
         }
         
         [HttpDelete("/theme/delete_in")]
-        public string DeleteIn(int[] ids)
+        public Info DeleteIn(int[] ids)
         {
             themeServer.deleteIn(ids);
-            return "записи удачно удалены";
+            return new Info("записи удачно удалены");
         }
         
         [HttpPut("/theme/update_all")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> UpdateAll(int id, ThemeBodyModelUpdateAll themeBodyModelUpdateAll)
+        public ActionResult<Info> UpdateAll(int id, ThemeBodyModelUpdateAll themeBodyModelUpdateAll)
         {
             if (!themeServer.checkIdRows(id)) {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("запись не найдена"));
             }
             themeServer.updateAll(id, themeBodyModelUpdateAll);
-            return "запись удачно измененна";
+            return new Info("запись удачно измененна");
         }
        
         [HttpPut("/theme/update_description")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> UpdateDescription(int id, ThemeBodyModelUpdateDescription themeBodyModelUpdateDescription)
+        public ActionResult<Info> UpdateDescription(int id, ThemeBodyModelUpdateDescription themeBodyModelUpdateDescription)
         {
             if (!themeServer.checkIdRows(id))
             {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("запись не найдена"));
             }
             themeServer.updateDescription(id, themeBodyModelUpdateDescription);
-            return "запись удачно измененна";
+            return new Info("запись удачно измененна");
         }
 
     }
