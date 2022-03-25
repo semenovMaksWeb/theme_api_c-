@@ -17,14 +17,14 @@ namespace api.Controllers
         [HttpGet("/theme/get_id")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<string> getNameWhereId(int id)
+        public ActionResult<ThemeModel> getNameWhereId(int id)
         {
-            string name = themeServer.getNameWhereId(id);
-            if (name == "")
+            ThemeModel themeModel = themeServer.getNameWhereId(id);
+            if (themeModel.name == "")
             {
-                return NotFound(new Info("тема не существует"));
+               return NotFound(new Info("тема не существует"));
             }
-            return name;
+            return themeModel;
         }
 
         [HttpGet("/theme/get_all")]

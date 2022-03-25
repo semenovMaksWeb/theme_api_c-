@@ -14,7 +14,7 @@
                 LIMIT @limit OFFSET @offset;
             ",
             ["getNameWhereId"] = @"
-                SELECT name count FROM public.theme WHERE id=@id",
+                SELECT id, name,description count FROM public.theme WHERE id=@id",
             ["getCountWhereName"] = @"
                 SELECT count(*) count FROM public.theme WHERE name=@name",
             ["getCountWhereId"] = @"

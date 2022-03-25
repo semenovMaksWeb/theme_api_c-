@@ -62,19 +62,16 @@ namespace api.Server.Theme
         /**
         *  function getNameWhereId - получить тему по id 
         */
-        public string getNameWhereId(int id)
+        public ThemeModel getNameWhereId(int id)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getNameWhereId"], db);
             sql.Parameters.AddWithValue("@id", id);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            string name = "";
-            while (dr.Read())
-            {
-                name = dr.GetString(0);
-            }
+            List<ThemeModel> res = new List<ThemeModel>();
+            res = mapBdMhemeModel(dr);
             db.Close();
-            return name;
+            return res[0];
 
 
 
