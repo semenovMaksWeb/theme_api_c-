@@ -39,7 +39,7 @@ namespace api.Server
             return new Info("запись успешно удалена");
         }
 
-        public VarCssNameThemeSaveReturn save(VarCssNameThemeSave varCssNameThemeSave)
+        public InfoAndId save(VarCssNameThemeSave varCssNameThemeSave)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["save"], db);
@@ -52,9 +52,9 @@ namespace api.Server
                 id = dr.GetInt32(0);
             }
             db.Close();
-            VarCssNameThemeSaveReturn varCssNameThemeSaveReturn = new VarCssNameThemeSaveReturn("запись успешно создана");
-            varCssNameThemeSaveReturn.id = id;
-            return varCssNameThemeSaveReturn;
+            InfoAndId result = new InfoAndId("запись успешно создана");
+            result.id = id;
+            return result;
         }
 
         public Info updateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)

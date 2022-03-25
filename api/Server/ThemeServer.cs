@@ -139,23 +139,22 @@ namespace api.Server.Theme
             return true;
         }
 
-        public void save(ThemeBodyModel themeBodyModel)
+        public InfoAndId save(ThemeBodyModel themeBodyModel)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["save"], db);
             sql.Parameters.AddWithValue("@name", themeBodyModel.name);
             sql.Parameters.AddWithValue("@description", themeBodyModel.description);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            //int id = 0;
-            //while (dr.Read())
-           // {
-            //    id = dr.GetInt32(0);
-            //}
-            //dr.Close();
-            // sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAll"];
-            // sql.Parameters.AddWithValue("@id_theme", id);
-            // sql.ExecuteNonQuery();
+            int id = 0;
+            while (dr.Read())
+            {
+                id = dr.GetInt32(0);
+            }
             db.Close();
+            InfoAndId result = new InfoAndId("запись успешно создана");
+            result.id = id;
+            return result;
         }
         
         public void delete(int id)

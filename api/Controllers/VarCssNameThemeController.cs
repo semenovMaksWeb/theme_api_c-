@@ -38,7 +38,7 @@ namespace api.Controllers
 
         [HttpPost("/var_css_name_theme/save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public VarCssNameThemeSaveReturn save(VarCssNameThemeSave varCssNameThemeSave)
+        public InfoAndId save(VarCssNameThemeSave varCssNameThemeSave)
         {
             return varCssNameThemeServer.save(varCssNameThemeSave);
         }

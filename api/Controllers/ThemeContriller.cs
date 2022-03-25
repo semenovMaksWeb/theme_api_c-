@@ -57,13 +57,12 @@ namespace api.Controllers
         [HttpPost("/theme/save")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Info> Post(ThemeBodyModel themeBodyModel)
+        public ActionResult<InfoAndId> Post(ThemeBodyModel themeBodyModel)
         {
             if(!themeServer.checkSave(themeBodyModel)) {
                 return BadRequest(new Info("текущие имя уже занято"));
             }
-            themeServer.save(themeBodyModel);
-            return new Info("запись удачно создана");
+           return themeServer.save(themeBodyModel);
         }
         
         [HttpDelete("/theme/delete")]
