@@ -20,7 +20,7 @@ namespace api.Controllers
         public ActionResult<ThemeModel> getNameWhereId(int id)
         {
             ThemeModel themeModel = themeServer.getNameWhereId(id);
-            if (themeModel.name == "")
+            if (themeModel.name == null)
             {
                return NotFound(new Info("тема не существует"));
             }
@@ -72,10 +72,10 @@ namespace api.Controllers
         {
             if (!themeServer.checkIdRows(id))
             {
-                return NotFound(new Info("запись не найдена"));
+                return NotFound(new Info("тема не найдена"));
             }
             themeServer.delete(id);
-            return new Info("запись удачно удалена");
+            return new Info("тема с id = " + id + " удачно удалена");
         }
         
         [HttpDelete("/theme/delete_in")]

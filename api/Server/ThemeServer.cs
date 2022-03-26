@@ -68,10 +68,15 @@ namespace api.Server.Theme
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getNameWhereId"], db);
             sql.Parameters.AddWithValue("@id", id);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            List<ThemeModel> res = new List<ThemeModel>();
-            res = mapBdMhemeModel(dr);
+            ThemeModel data = new ThemeModel();
+            while (dr.Read())
+            {
+                data.id = dr.GetInt32(0);
+                data.name = dr.GetString(1);
+                data.description = dr.GetString(2);
+            }
             db.Close();
-            return res[0];
+            return data;
 
 
 
@@ -149,7 +154,7 @@ namespace api.Server.Theme
                 id = dr.GetInt32(0);
             }
             db.Close();
-            InfoAndId result = new InfoAndId("запись успешно создана");
+            InfoAndId result = new InfoAndId("тема успешно создана");
             result.id = id;
             return result;
         }
