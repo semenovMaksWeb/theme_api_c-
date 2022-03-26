@@ -174,14 +174,16 @@ namespace api.Server.Theme
             db.Close();
         }
         
-        public void deleteIn(int[] ids)
+        public void deleteIn(ThemeBodyModelDeleteIn themeBodyModelDeleteIn)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["deleteThemeIds"], db);
-            sql.Parameters.AddWithValue("@ids_theme", ids);
+            
+            sql.Parameters.AddWithValue("@ids_theme", themeBodyModelDeleteIn.id);
             sql.ExecuteNonQuery();
-            sql.CommandText = SqlCommand.sqlTheme["delete"];
-            sql.Parameters.AddWithValue("@ids", ids);
+            sql.CommandText = SqlCommand.sqlTheme["deleteIn"];
+            sql.Parameters.AddWithValue("@ids", themeBodyModelDeleteIn.id);
+            sql.ExecuteNonQuery();
             db.Close();
         }
        

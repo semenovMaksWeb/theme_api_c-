@@ -79,7 +79,7 @@ namespace api.Controllers
         }
         
         [HttpDelete("/theme/delete_in")]
-        public Info DeleteIn(int[] ids)
+        public Info DeleteIn(ThemeBodyModelDeleteIn ids)
         {
             themeServer.deleteIn(ids);
             return new Info("записи удачно удалены");
