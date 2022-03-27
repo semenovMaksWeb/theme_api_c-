@@ -87,7 +87,7 @@ namespace api.Server.Theme
         public int getCountWhereName(string name)
         {
             db.Open();
-            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getCountWhereName"], db);
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getCountWhereNameAndId"], db);
             sql.Parameters.AddWithValue("@name", name);
             NpgsqlDataReader dr = sql.ExecuteReader();
             int count = 0;
@@ -97,10 +97,26 @@ namespace api.Server.Theme
             }
             db.Close();
             return count;
-
-
-
         }
+        /**
+        *  function getCountWhereName - получить количество записей по имени валидация занятого имени
+        */
+        public int getCountWhereNameAndId(string name, int id)
+        {
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getCountWhereNameAndId"], db);
+            sql.Parameters.AddWithValue("@name", name);
+            sql.Parameters.AddWithValue("@id", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            int count = 0;
+            while (dr.Read())
+            {
+                count = dr.GetInt32(0);
+            }
+            db.Close();
+            return count;
+        }
+
         /**
         *  function getCountWhereId - получить количество записей по id валидация занятого имени
         */
@@ -132,6 +148,15 @@ namespace api.Server.Theme
         /**
         *  function checkIdRows -  проверка есть ли записи по id
         */
+        public bool checkUpdate(int id, ThemeBodyModel themeBodyModel)
+        {
+            if (getCountWhereNameAndId(themeBodyModel.name, id) > 0)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public bool checkSave(ThemeBodyModel themeBodyModel)
         {
             if (getCountWhereName(themeBodyModel.name) > 0)

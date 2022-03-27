@@ -93,6 +93,10 @@ namespace api.Controllers
             if (!themeServer.checkIdRows(id)) {
                 return NotFound(new Info("запись не найдена"));
             }
+            if (!themeServer.checkUpdate(id, themeBodyModelUpdateAll))
+            {
+                return BadRequest(new Info("имя занято!"));
+            }
             themeServer.updateAll(id, themeBodyModelUpdateAll);
             return new Info("запись удачно измененна");
         }
