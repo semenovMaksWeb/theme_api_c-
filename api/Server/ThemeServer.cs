@@ -87,7 +87,7 @@ namespace api.Server.Theme
         public int getCountWhereName(string name)
         {
             db.Open();
-            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getCountWhereNameAndId"], db);
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlTheme["getCountWhereName"], db);
             sql.Parameters.AddWithValue("@name", name);
             NpgsqlDataReader dr = sql.ExecuteReader();
             int count = 0;
