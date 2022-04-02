@@ -1,6 +1,8 @@
 ﻿#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
 
 using Npgsql;
+
+
 namespace api.libs
 {
     public class Libs
@@ -40,6 +42,14 @@ namespace api.libs
             }
             sqlUpdate = sqlUpdate.Remove(sqlUpdate.Length - 1);
             return sqlUpdate;
+        }
+
+        static public Dictionary<string, Dictionary<string, string>> createCustomErrors(Dictionary<string, string> errors_key)
+        {
+            Dictionary<string, Dictionary<string, string>> response = new Dictionary<string, Dictionary<string, string>>();
+            response.Add("errors", errors_key);
+            return response;
+
         }
     }
 }

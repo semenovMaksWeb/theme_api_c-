@@ -60,7 +60,9 @@ namespace api.Controllers
         public ActionResult<InfoAndId> Post(ThemeBodyModel themeBodyModel)
         {
             if(!themeServer.checkSave(themeBodyModel)) {
-                return BadRequest(new Info("текущие имя уже занято"));
+                Dictionary<string, string> errors_key = new Dictionary<string, string>();
+                errors_key.Add("name", "текущие имя занято");
+                return BadRequest(libs.Libs.createCustomErrors(errors_key));
             }
            return themeServer.save(themeBodyModel);
         }
