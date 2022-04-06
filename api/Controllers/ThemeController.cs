@@ -97,7 +97,9 @@ namespace api.Controllers
             }
             if (!themeServer.checkUpdate(id, themeBodyModelUpdateAll))
             {
-                return BadRequest(new Info("имя занято!"));
+                Dictionary<string, string> errors_key = new Dictionary<string, string>();
+                errors_key.Add("name", "текущие имя занято");
+                return BadRequest(libs.Libs.createCustomErrors(errors_key));
             }
             themeServer.updateAll(id, themeBodyModelUpdateAll);
             return new Info("запись удачно измененна");
