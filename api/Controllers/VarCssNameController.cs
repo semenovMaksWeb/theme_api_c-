@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using api.Server.VarCssName;
 using api.Models;
+using api.Models.Theme;
+
 namespace api.Controllers
 {
     [ApiController]
@@ -13,7 +15,24 @@ namespace api.Controllers
         {
             _logger = logger;
         }
-        
+
+
+
+        [HttpGet("/var_css_name/get_id")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<VarCssNameModel> getNameWhereId(int id)
+        {
+            VarCssNameModel varCssNameModel = varCssNameServer.getWhereId(id);
+            if (varCssNameModel.name == null)
+            {
+                return NotFound(new Info("переменная не существует"));
+            }
+            return varCssNameModel;
+        }
+
+
+
         [HttpGet("/var_css_name/get_all")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -30,30 +49,33 @@ namespace api.Controllers
         [HttpPost("/var_css_name/save")]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<Info> Post(VarCssNameBodyModel varCssNameBodyModel)
+        public ActionResult<InfoAndId> Post(VarCssNameBodyModel varCssNameBodyModel)
         {
             if(!varCssNameServer.checkSave(varCssNameBodyModel)) {
-                return BadRequest(new Info("текущие имя уже занято"));
+                Dictionary<string, string> errors_key = new Dictionary<string, string>();
+                errors_key.Add("name", "текущие имя переменной уже занято");
+                return BadRequest(libs.Libs.createCustomErrors(errors_key));
             }
-            varCssNameServer.save(varCssNameBodyModel);
-            return new Info("запись удачно создана");
+            InfoAndId infoAndId = new InfoAndId("переменная удачно создана");
+            infoAndId.id = varCssNameServer.save(varCssNameBodyModel);
+            return infoAndId;
         }
         
         [HttpDelete("/var_css_name/delete")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<string> Delete (int id)
+        public ActionResult<Info> Delete (int id)
         {
             if (!varCssNameServer.checkIdRows(id))
             {
-                return NotFound("запись не найдена");
+                return NotFound(new Info("переменная не найдена"));
             }
             varCssNameServer.delete(id);
-            return "запись удачно удалена";
+            return new Info("переменная удачно удалена");
         }
         
         [HttpDelete("/var_css_name/delete_in")]
-        public Info DeleteIn(int[] ids)
+        public Info DeleteIn(ThemeBodyModelDeleteIn ids)
         {
             varCssNameServer.deleteIn(ids);
             return new Info("записи удачно удалены");
@@ -66,6 +88,12 @@ namespace api.Controllers
         {
             if (!varCssNameServer.checkIdRows(id)) {
                 return NotFound(new Info("запись не найдена"));
+            }
+            if (!varCssNameServer.checkUpdate(id, varCssNameBodyModelUpdateAll))
+            {
+                Dictionary<string, string> errors_key = new Dictionary<string, string>();
+                errors_key.Add("name", "текущие имя пеменнной уже занято");
+                return BadRequest(libs.Libs.createCustomErrors(errors_key));
             }
             varCssNameServer.updateAll(id, varCssNameBodyModelUpdateAll);
             return  new Info("запись удачно измененна");

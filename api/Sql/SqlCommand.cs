@@ -37,6 +37,10 @@
         };
         static public Dictionary<string, string> sqlVarCssNameTheme = new Dictionary<string, string>()
         {
+
+            ["getInsertVar"] = @"
+                SELECT * FROM var_css_name where  id not in (select id_var_css_name from var_css_name__theme vcnt where id_theme  = @id_theme)
+            ",
             ["insertAll"] = @"
                 insert into var_css_name__theme (id_theme, id_var_css_name)
                 values(
@@ -57,6 +61,7 @@
             ["deleteVarCssId"] = @"
                 DELETE FROM var_css_name__theme WHERE id_var_css_name = @id_var_css;
             ",
+
             ["deleteVarCssIds"] = @"
                 DELETE FROM var_css_name__theme WHERE id_var_css_name = ANY(@ids_var_css);
             ",
@@ -93,18 +98,23 @@
                 left join theme  on vcnt.id_theme = theme.id
                 left join var_css_name vcm on vcm.id = vcnt.id_var_css_name
                 where theme.id = @id_theme
-            "
+            ",
         };
         static public Dictionary<string, string> sqlVarCssName = new Dictionary<string, string>()
          {
              ["getAll"] = @"
                 select id, name,description 
                     from public.var_css_name",
-             ["getCountWhereName"] = @"
+            ["getId"] = @"
+                select id, name,description 
+                    from public.var_css_name where id=@id;",
+            ["getCountWhereName"] = @"
                 SELECT count(*) count FROM public.var_css_name WHERE name=@name",
              ["getCountWhereId"] = @"
                 SELECT count(*) count FROM public.var_css_name WHERE id=@id",
-             ["save"] = @"
+            ["getCountWhereNameAndId"] = @"
+                SELECT count(*) count FROM public.var_css_name WHERE name=@name and id<>@id",
+            ["save"] = @"
                  INSERT INTO public.var_css_name (name, description) VALUES(@name, @description) RETURNING id",
              ["delete"] = @"
                  DELETE FROM public.var_css_name WHERE id=@id;",

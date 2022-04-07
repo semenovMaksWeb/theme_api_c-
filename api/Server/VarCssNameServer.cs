@@ -1,6 +1,8 @@
 ﻿using Npgsql;
 using api.Models;
 using api.Sql;
+using api.Models.Theme;
+
 namespace api.Server.VarCssName
 {
     public class VarCssNameServer
@@ -28,7 +30,31 @@ namespace api.Server.VarCssName
             db.Close();
             return res;
         }
-        
+
+
+
+        public VarCssNameModel getWhereId(int id)
+        {
+            db.Close();
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["getId"], db);
+            sql.Parameters.AddWithValue("@id", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            VarCssNameModel data = new VarCssNameModel();
+            while (dr.Read())
+            {
+                data.id = dr.GetInt32(0);
+                data.name = dr.GetString(1);
+                data.description = dr.GetString(2);
+            }
+            db.Close();
+            return data;
+
+
+
+        }
+
+
         public int getCountWhereName(string name)
         {
             db.Open();
@@ -62,6 +88,21 @@ namespace api.Server.VarCssName
             return count;
         }
 
+        public int getCountWhereNameAndId(int id, string name) 
+        {
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["getCountWhereNameAndId"], db);
+            sql.Parameters.AddWithValue("@name", name);
+            sql.Parameters.AddWithValue("@id", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            int count = 0;
+            while (dr.Read())
+            {
+                count = dr.GetInt32(0);
+            }
+            db.Close();
+            return count;
+        }
         public bool checkIdRows(int id)
         {
             if (getCountWhereId(id) == 0)
@@ -80,23 +121,32 @@ namespace api.Server.VarCssName
             return true;
         }
 
-        public void save(VarCssNameBodyModel varCssNameBodyModel)
+        public bool checkUpdate(int id, VarCssNameBodyModelUpdateAll varCssNameBodyModelUpdateAll)
+        {
+            if (getCountWhereNameAndId(id, varCssNameBodyModelUpdateAll.name) > 0 )
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public int save(VarCssNameBodyModel varCssNameBodyModel)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssName["save"], db);
             sql.Parameters.AddWithValue("@name", varCssNameBodyModel.name);
             sql.Parameters.AddWithValue("@description", varCssNameBodyModel.description);
             NpgsqlDataReader dr = sql.ExecuteReader();
-            //int id = 0;
-            //while (dr.Read())
-            //{
-            //    id = dr.GetInt32(0);
-            //}
-            //dr.Close();
+            int id = 0;
+            while (dr.Read())
+            {
+               id = dr.GetInt32(0);
+            }
+            dr.Close();
+            return id;
             //sql.CommandText = SqlCommand.sqlVarCssNameTheme["insertAllVarCss"];
             //sql.Parameters.AddWithValue("@id_var_css", id);
-            //sql.ExecuteNonQuery();
-            db.Close();       
+            //sql.ExecuteNonQuery();       
             }
         
         public void delete(int id)
@@ -112,14 +162,14 @@ namespace api.Server.VarCssName
             db.Close();
         }
         
-        public void deleteIn(int[] ids)
+        public void deleteIn(ThemeBodyModelDeleteIn ids)
         {
             db.Open();
             NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["deleteVarCssIds"], db);
-            sql.Parameters.AddWithValue("@ids_var_css", ids);
+            sql.Parameters.AddWithValue("@ids_var_css", ids.id);
             sql.ExecuteNonQuery();
             sql.CommandText =  SqlCommand.sqlVarCssName["deleteIn"];
-            sql.Parameters.AddWithValue("@ids", ids);
+            sql.Parameters.AddWithValue("@ids", ids.id);
             sql.ExecuteNonQuery();
             db.Close();
         }
