@@ -9,14 +9,9 @@ namespace api.Server
     {
         public NpgsqlConnection db = Connection.conn;
 
-        public List<VarCssNameTheme> getAll(int id)
+        public List<VarCssNameTheme> mapVarCssNameThemeValue(NpgsqlDataReader dr)
         {
             List<VarCssNameTheme> varCssNameThemeList = new List<VarCssNameTheme>();
-            db.Open();
-            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["getThemeId"],
-                db);
-            sql.Parameters.AddWithValue("@id_theme", id);
-            NpgsqlDataReader dr = sql.ExecuteReader();
             while (dr.Read())
             {
                 VarCssNameTheme varCssNameTheme = new VarCssNameTheme();
@@ -25,6 +20,47 @@ namespace api.Server
                 varCssNameTheme.value = libs.Libs.saveNullNpgsqlString(dr, 2);
                 varCssNameThemeList.Add(varCssNameTheme);
             }
+            return varCssNameThemeList;
+        }
+
+        public List<VarCssNameModel> mapVarCssName(NpgsqlDataReader dr)
+        {
+            List<VarCssNameModel> varCssNameList = new List<VarCssNameModel>();
+            while (dr.Read())
+            {
+                VarCssNameModel varCssNameTheme = new VarCssNameModel();
+                varCssNameTheme.id = dr.GetInt32(0);
+                varCssNameTheme.name = dr.GetString(1);
+                varCssNameTheme.description = libs.Libs.saveNullNpgsqlString(dr, 2);
+                varCssNameList.Add(varCssNameTheme);
+            }
+            return varCssNameList;
+        }
+
+
+
+        public List<VarCssNameModel> getInsertVar(int id)
+        {
+            List<VarCssNameModel> varCssNameThemeList = new List<VarCssNameModel>();
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["getInsertVar"],
+               db);
+            sql.Parameters.AddWithValue("@id_theme", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            varCssNameThemeList = mapVarCssName(dr);
+            db.Close();
+            return varCssNameThemeList;
+
+        }
+        public List<VarCssNameTheme> getAll(int id)
+        {
+            List<VarCssNameTheme> varCssNameThemeList = new List<VarCssNameTheme>();
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["getThemeId"],
+                db);
+            sql.Parameters.AddWithValue("@id_theme", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            varCssNameThemeList = mapVarCssNameThemeValue(dr);
             db.Close();
             return varCssNameThemeList;
         }
