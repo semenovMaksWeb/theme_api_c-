@@ -5,7 +5,6 @@ namespace api.Models.VarCssNameTheme
     {
         [Required(ErrorMessage = "Укажите id переменной в теме")]
         public int id { get; set; }
-        [Required(ErrorMessage = "Укажите value переменной в теме")]
         public string value { get; set; } = "";
     }
 }

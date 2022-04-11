@@ -93,14 +93,14 @@ namespace api.Server
             return result;
         }
 
-        public Info updateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
+        public Info updateAll(VarCssNameThemeUpdateAllList varCssNameThemeUpdateAllList)
         {
             db.Open();
             /*
                 TODO проверить на sql инвъекции! опасный код!!
              */
             List<string> names = new List<string>() {"id", "value" };
-            string param = libs.Libs.convertListObjectInStringUpdateSql<VarCssNameThemeUpdateAll>(varCssNameThemeUpdateAll, names);
+            string param = libs.Libs.convertListObjectInStringUpdateSql<VarCssNameThemeUpdateAll>(varCssNameThemeUpdateAllList.data, names);
             // спорное решение
             string sql_command = SqlCommand.sqlVarCssNameTheme["updateAll"];
             sql_command = sql_command.Replace("@values", param);

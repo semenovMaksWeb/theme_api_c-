@@ -1,7 +1,7 @@
 ﻿#pragma warning disable CS8602 // Разыменование вероятной пустой ссылки.
 
 using Npgsql;
-
+using System.Data;
 
 namespace api.libs
 {
@@ -50,6 +50,13 @@ namespace api.libs
             response.Add("errors", errors_key);
             return response;
 
+        }
+        static public void checkBdOpen(NpgsqlConnection db)
+        {
+            if(db.State != ConnectionState.Open)
+            {
+                db.Open();
+            }
         }
     }
 }

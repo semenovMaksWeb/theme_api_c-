@@ -41,7 +41,7 @@ namespace api.Controllers
 
         [HttpPut("/var_css_name_theme/update_all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public Info UpdateAll(List<VarCssNameThemeUpdateAll> varCssNameThemeUpdateAll)
+        public Info UpdateAll(VarCssNameThemeUpdateAllList varCssNameThemeUpdateAll)
         {
             return varCssNameThemeServer.updateAll(varCssNameThemeUpdateAll);
         }
