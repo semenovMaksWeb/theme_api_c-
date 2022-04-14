@@ -28,6 +28,19 @@ namespace api.Controllers
             return NotFound(new Info("указанной темы не существует"));
         }
 
+
+
+        [HttpGet("/var_css_name_theme/id")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public VarCssNameTheme GetId(int id)
+        {
+            return varCssNameThemeServer.getId(id);
+        }
+
+
+
+
+
         [HttpGet("/var_css_name_theme/get_insert")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<VarCssNameModel>> GetInsert(int id)

@@ -37,7 +37,23 @@ namespace api.Server
             return varCssNameList;
         }
 
-
+        public VarCssNameTheme getId(int id)
+        {
+            VarCssNameTheme varCssNameTheme = new VarCssNameTheme();
+            db.Open();
+            NpgsqlCommand sql = new NpgsqlCommand(SqlCommand.sqlVarCssNameTheme["getId"],
+                db);
+            sql.Parameters.AddWithValue("@id", id);
+            NpgsqlDataReader dr = sql.ExecuteReader();
+            while (dr.Read())
+            {
+                varCssNameTheme.id = dr.GetInt32(0);
+                varCssNameTheme.name = dr.GetString(1);
+                varCssNameTheme.value = libs.Libs.saveNullNpgsqlString(dr, 2);
+            }
+            db.Close();
+            return varCssNameTheme;
+        }
 
         public List<VarCssNameModel> getInsertVar(int id)
         {

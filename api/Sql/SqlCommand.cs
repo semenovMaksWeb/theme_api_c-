@@ -37,7 +37,13 @@
         };
         static public Dictionary<string, string> sqlVarCssNameTheme = new Dictionary<string, string>()
         {
-
+            ["getId"] = @"
+                select vcnt.id as id,vcm.name  as var_name, value
+                from var_css_name__theme vcnt
+                left join theme  on vcnt.id_theme = theme.id
+                left join var_css_name vcm on vcm.id = vcnt.id_var_css_name
+                where vcnt.id = @id
+            ",
             ["getInsertVar"] = @"
                 SELECT * FROM var_css_name where  id not in (select id_var_css_name from var_css_name__theme vcnt where id_theme  = @id_theme)
             ",
