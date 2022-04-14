@@ -3,6 +3,7 @@ using api.Server;
 using api.Models.VarCssNameTheme;
 using api.Models;
 using api.Server.Theme;
+using api.Server.VarCssName;
 
 namespace api.Controllers
 {
@@ -12,6 +13,7 @@ namespace api.Controllers
     {
         private VarCssNameThemeServer varCssNameThemeServer = new VarCssNameThemeServer();
         private ThemeServer themeServer = new ThemeServer();
+        private VarCssNameServer varCssNameServer = new VarCssNameServer();
         private readonly ILogger<VarCssNameController> _logger;
         public VarCssNameThemeController(ILogger<VarCssNameController> logger)
         {
@@ -68,9 +70,16 @@ namespace api.Controllers
 
         [HttpPost("/var_css_name_theme/save")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public InfoAndId save(VarCssNameThemeSave varCssNameThemeSave)
+        public ActionResult<InfoAndId> save(VarCssNameThemeSave varCssNameThemeSave)
         {
-            return varCssNameThemeServer.save(varCssNameThemeSave);
+            if (varCssNameServer.checkIdRows(varCssNameThemeSave.id_var))
+            {
+                return varCssNameThemeServer.save(varCssNameThemeSave);
+            }
+            Dictionary<string, string> errors_key = new Dictionary<string, string>();
+            errors_key.Add("id", "переменная не существует");
+            return BadRequest(libs.Libs.createCustomErrors(errors_key));
+ 
         }
     }
 }
